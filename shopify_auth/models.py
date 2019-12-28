@@ -22,6 +22,9 @@ class ShopUserManager(BaseUserManager):
         else:
             user.set_password(password)
         user.email = email
+        user.is_staff = False
+        user.is_superuser = False
+        user.is_active = True
         user.save(using=self._db)
         return user
 
