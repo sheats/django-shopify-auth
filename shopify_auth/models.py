@@ -21,6 +21,7 @@ class ShopUserManager(BaseUserManager):
             user.set_unusable_password()
         else:
             user.set_password(password)
+        user.username = myshopify_domain
         user.email = email
         user.is_staff = False
         user.is_superuser = False
