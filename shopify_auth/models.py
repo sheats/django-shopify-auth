@@ -29,7 +29,11 @@ class ShopUserManager(BaseUserManager):
         """
         Creates and saves a ShopUser with the given domains and password.
         """
-        return self.create_user(myshopify_domain, password, email)
+        user = self.create_user(myshopify_domain, password, email)
+        user.is_staff = True
+        user.is_superuser = True
+        user.is_active = True
+        user.save()
 
 
 class AbstractShopUser(AbstractUser):
