@@ -6,7 +6,7 @@ from django.db import models
 
 
 class ShopUserManager(BaseUserManager):
-    def create_user(self, myshopify_domain, password=None):
+    def create_user(self, myshopify_domain, password=None, email=None):
         """
         Creates and saves a ShopUser with the given domain and password.
         """
@@ -17,15 +17,19 @@ class ShopUserManager(BaseUserManager):
 
         # Never want to be able to log on externally.
         # Authentication will be taken care of by Shopify OAuth.
-        user.set_unusable_password()
+        if password is None:
+            user.set_unusable_password()
+        else:
+            user.set_password(password)
+        user.email = email
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, myshopify_domain, password):
+    def create_superuser(self, myshopify_domain, password, email=None):
         """
         Creates and saves a ShopUser with the given domains and password.
         """
-        return self.create_user(myshopify_domain, password)
+        return self.create_user(myshopify_domain, password, email)
 
 
 class AbstractShopUser(AbstractUser):
